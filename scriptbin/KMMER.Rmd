@@ -1,0 +1,42 @@
+---
+title: "COBS_CAZY Notebook"
+output: html_notebook
+root: ../../..
+---
+#R
+##KMMER CODE options in various languages
+```{r}
+library(Biostrings)
+s = DNAString('ATGCCCATCAAAGGCTCATTGCGACC')
+kmercounts = oligonucleotideFrequency(s,4)
+head(kmercounts)
+kmercounts[kmercounts>0]
+```
+###Returns:
+AAAG AAGG AGGC ATCA ATGC ATTG CAAA CATC CATT CCAT CCCA CGAC CTCA GACC GCCC GCGA 
+   1    1    1    1    1    1    1    1    1    1    1    1    1    1    1    1 
+GCTC GGCT TCAA TCAT TGCC TGCG TTGC 
+   1    1    1    1    1    1    1
+###If you want to know the kmer count for a specific kmer, you can do this:
+```{r}
+x['AAAG']
+```
+###which returns:
+AAAG
+   1
+#PYTHON
+```{python}
+seq = 'AGATAGATAGACACAGAAATGGGGACCACAC'
+kmers = {}
+k = 4
+for i in range(len(seq) -k + 1):
+   kmer = seq[i:i+k]
+   if kmers.has_key(kmer):
+      kmers[kmer] += 1
+   else:
+      kmers[kmer] = 1
+
+for kmer, count in kmers.items():
+   print kmer + "\t" + str(count)
+```
+
