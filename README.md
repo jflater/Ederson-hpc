@@ -19,12 +19,53 @@ We are interested in IDing unique sequences in G1 and G2 that are not found in o
 6. NZ_AQHN01000096.1
 7. NZ_AQHN1000084.1 -could not find this on NCBI
 
----
+----
 
 The python script "k-mer.py" is a script that works through refrence and comparison genomes that we choose and finds unique sequnces of lenght k (k-mer) for this script k = 150 bp. 
 
 Download RefSoil from https://figshare.com/articles/RefSoil_Database/4362812
+----
+```{python}
+#python k-mer.py [reference1.fa] [comparison1.fa] [comparison.fa] [comparison3.fa] > filename.fa
+import screed, sys
 
+def consume_genome(fname):
+   genome = ''
+   for f in fname:
+      for record in screed.open(f):
+         genome = genome + record.sequence
+   return genome
+
+def kmer_count(g, bp):
+   f={}
+   for x in range(len(g)+1-bp):
+      kmer=g[x:x+bp]
+      if f.has_key(kmer):
+         continue
+      else:
+         f[kmer]=f.get(kmer,0)+1
+   return(f)
+
+def rolling_window(seq, window_size):
+   for i in xrange(len(seq) - window_size + 1):
+      yield seq[i:i+window_size]
+
+fname = sys.argv[1:2]
+fname_compare = sys.argv[2:]
+
+
+ref_genome1 = consume_genome(fname)
+kmer_dict = kmer_count(ref_genome1, 150)
+ref_genome2 = consume_genome(fname_compare)
+
+for seq in rolling_window(ref_genome2, 150):
+        if kmer_dict.has_key(seq):
+                del kmer_dict[seq]
+
+for n, kmer in enumerate(kmer_dict.keys()):
+        print ">" + str(n) + "_" + fname[0]
+        print kmer
+```
 ----
 Find k-mers in r.freire
 ```{bash}
@@ -34,30 +75,5 @@ Find k-mers in r.tropici
 ```{bash}
 phython k-mer.py refrence_genomes/NC_02006*.fa refrence_genomes/NC_020059.1.fa refrence_genomes/NZ*.fa compare_genomes/*.fa > r.tropici.mers.fa
 ```
-# Notice that in https://github.com/jflater/Ederson/blob/master/compare_genomes/FMAF00000000.1.fa
 
-There is no fasta file, this ID is a part of a whole shotgun sequencing project, we need to get the metagenomes from within this ID. 
-
-In the compare_genomes directory
-
-```{bash}
-mkdir metagenomes
-mv *000.* metagenomes/
-
-mkdir full_genomes
-mv *.fa full_genomes/
-```
-
-In the reference_genomes directory we see that there are no 00. genomes, indicating we have no masters in this list. 
-
-I need to get to this website for each ID: https://www.ncbi.nlm.nih.gov/Traces/wgs/?val=FMAH01&display=contigs&page=1
-
-Notice the FMAHO1.1.fsa_nt.gz this is the fasta file for each contig
-
-ftp://ftp.ncbi.nlm.nih.gov/sra/wgs_aux/FM/AH/FMAH01/FMAH01.1.fsa_nt.gz
-
-Let's try to trim the filenames to something closer to the project name:
-```{bash}
-ls metagenomes/*.fa | grep -oE '/[^/]+.' | cut -c2- | rev | cut -c4- | rev > test.txt
-```
 

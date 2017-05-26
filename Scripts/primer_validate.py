@@ -1,6 +1,6 @@
 #python k-mer.py [primer.fa] [comparison1.fa] [comparison.fa] [comparison3.fa] > filename.fa
 
-#Need to take in primers forward and back, and validate them by making sure they do not appear in know genomes of non-target organisms. 
+#Need to take in primers forward and back, and validate them by making sure they do not appear in known genomes of non-target organisms. 
 
 import screed, sys
 
