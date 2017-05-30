@@ -141,3 +141,39 @@ ACTATGGCCTTGCACCGGG
 >131_4_refrence_genomes/NZ.fa_reverse
 GATCCGCGCATAGGCGGCG
 ```
+# Now we need to get the "body" out of each k-mer (the middle is 112 bp, 150 total bp minus the two 19 bp ends)
+# For this, use body.py
+```{python}
+#python body.py
+#use this to feed the body (150-(19*2))bp into a body.fa. We need to make sure no primers match any portion of the k-mer. In addtion, we also include this with all other .fa files we are comparing to.
+
+import screed, sys
+
+#Breaks down a sequence input into corresponding k-mers
+def rolling_window(seq, window_size):
+   for i in xrange(len(seq) - window_size + 1):
+      yield seq[i:i+window_size]
+
+#exclude first and last 19 bp (future primer) collect only center of 150 bp sequence
+for record in screed.open(sys.argv[1]):
+   my_seq = record.sequence
+   for n, x in enumerate(rolling_window(my_seq, 112)):
+      if n == 19:
+         print ">" + str(n) + "_" + record.name
+         print x
+```
+# This is what the output of body.py looks like:
+```{bash}
+flaterj1@dev-intel14 Scripts]$ python body.py ../test/test_NC_mers.fa
+>19_0_refrence_genomes/NC.fa
+GATCTGCCAGGATACGCCCCATCTGTCCTTGCACCAGCCGCATTCGCTTTCCTGGCCGCCATTGCCGACAATGGCGTTCCAATAACGATCCGTCTCTTCCTGGTCCTCGGTG
+>19_1_refrence_genomes/NC.fa
+ATCATGCTGGACCTGGTGCCATCAGCAAGAACCGAGAGTTTCGCTTCGGTACCACCAGGCAAATGGTTGCTGGACATGGTGCCGTGGTCGAAAGCTCGGCATGTCATTCGAG
+>19_2_refrence_genomes/NC.fa
+AGGTCGACCGCTTCATCATCTTCGCGCTGGCAGCCGCGGAAGAGGCGCTGGCGCAAGCGAACTGGAGGCCGTCGTCGAATGAGGACCGCCTGCGCACCGCGACAATCATCGC
+>19_3_refrence_genomes/NC.fa
+GTCGTTGTCGGCAGCGGCCTTGCCGGATTAATGACGGCGCTGACGCTGGCGCCCGAGCCGACCGTGATCGTCACCCGCGCCCTGATCGGTGCGGAGACATCGAGCGCCTGGG
+>19_4_refrence_genomes/NC.fa
+GAGGCCCGCCAGCGCATAGGCCGCGGCACGCAGGCGGACGACGGACCAGCCAGCCCGCTGCAACGACCGCTGATTGCCGCCGACGCCGCGGATCAGCACCCCGAAGGAGGAG
+```
+
