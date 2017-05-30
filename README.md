@@ -26,7 +26,7 @@ The python script "k-mer.py" is a script that works through refrence and compari
 Download RefSoil from https://figshare.com/articles/RefSoil_Database/4362812
 ----
 
-#First script in k-mer process:
+First script in k-mer process:
 ```{python}
 #python k-mer.py [reference1.fa] [comparison1.fa] [comparison.fa] [comparison3.fa] > filename.fa
 import screed, sys
