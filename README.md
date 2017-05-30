@@ -23,10 +23,10 @@ We are interested in IDing unique sequences in G1 and G2 that are not found in o
 
 The python script "k-mer.py" is a script that works through refrence and comparison genomes that we choose and finds unique sequnces of lenght k (k-mer) for this script k = 150 bp. 
 
-Download RefSoil from https://figshare.com/articles/RefSoil_Database/4362812
+#  Download RefSoil from https://figshare.com/articles/RefSoil_Database/4362812
 ----
 
-First script in k-mer process:
+#  First script in k-mer process:
 ```{python}
 #python k-mer.py [reference1.fa] [comparison1.fa] [comparison.fa] [comparison3.fa] > filename.fa
 import screed, sys
@@ -68,7 +68,21 @@ for n, kmer in enumerate(kmer_dict.keys()):
         print ">" + str(n) + "_" + fname[0]
         print kmer
 ```
-#Example shell commands and file names for first script:
+# For each file output looks like:
+```{bash}
+[flaterj1@dev-intel14 K_mers]$ head NZ_mers.fa
+>0_refrence_genomes/NZ.fa
+TCAGCCAGTCCGATCCAGACTATTACTTCAGCCTGCGTCCCGTGGTCGAAGCCTTCCCCGACGCCCGCGTCATCGCTGCCAGCGCCACCATCGAGGCGATCAAGGCAAATGTGCAGAAGAAGCTCGACACCTGGGGTCCGCAACTCAAGG
+>1_refrence_genomes/NZ.fa
+GATGGGCGAAACCGCGGCGGATTATCTCGCCGTCAACATGGGGCTTGGCCTTACGCTGACGTCGCTCGCCATGGCCGTAGTGCTTGTCGGTGTGCTTGCGATCCAGTTTCTGCAGGAGCGCTACGTTCCTTGGGCTTATTGGATCGCCGT
+>2_refrence_genomes/NZ.fa
+GCGATCACCCGGTGAAGCCTTGAGATGCGAGATCAGCACCGTGATGACGAAACCATCGATATCACGCGAAAATCGGAAGCCGTGATTGAGGCGTGGCGGCACCGTAATGATCGCGGGTGGGGTGATGGCGTGAGGAGTTCCGTCAAAGAT
+>3_refrence_genomes/NZ.fa
+TCATGATGGCGGCTGCGGTGGTGCGTGGCTCGTCGGCCCAGACATAGCCGACCATCAGCGATGCATCCCAGACGCCATCGATGGCGTCGATCCCGGGCAGCATGTCGTAGAGGCCCTTGGCTGGTTCATCGACCGTGCTGGTGCGTTCGC
+>4_refrence_genomes/NZ.fa
+ACTATGGCCTTGCACCGGGCAAGGACGAGAAGCCCGGTCTCTGGCTGGTTGGAGACCAAGGGATCTACGTCATGTCGAATGGAAGGCTGCGATCAGACGCCAGACCACTCGTGGTCTATGCGGAGGAATGCGATCCGCGCATAGGCGGCG
+```
+# Example shell commands and file names for first script:
 ----
 Find k-mers in r.freire
 ```{bash}
@@ -78,5 +92,28 @@ Find k-mers in r.tropici
 ```{bash}
 phython k-mer.py refrence_genomes/NC_02006*.fa refrence_genomes/NC_020059.1.fa refrence_genomes/NZ*.fa compare_genomes/*.fa > r.tropici.mers.fa
 ```
+# Now we will move onto the second script in the process, finding primers for each k-mer:
+```{bash}
+#python pri-mer.py
+#use this to find unique ends of kmers
+
+import screed, sys
+
+#Breaks down a sequence input into corresponding k-mers
+def rolling_window(seq, window_size):
+   for i in xrange(len(seq) - window_size + 1):
+      yield seq[i:i+window_size]
 
 
+#Make fname be first and last 19 bp or two fnames forward and reverse
+for record in screed.open(sys.argv[1]): #reading in your kmer file
+   my_seq = record.sequence
+   #print my_seq
+   for n, x in enumerate(rolling_window(my_seq, 19)):
+      if n == 0:
+         print ">" + str(n) + "_" + record.name + "_forward"
+         print x
+      if n == 131:
+         print ">" + str(n) + "_" + record.name + "_reverse"
+         print x
+```
