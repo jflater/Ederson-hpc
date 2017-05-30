@@ -105,7 +105,7 @@ def rolling_window(seq, window_size):
       yield seq[i:i+window_size]
 
 
-#Make fname be first and last 19 bp or two fnames forward and reverse
+#Make fname be first and last 19 bp 
 for record in screed.open(sys.argv[1]): #reading in your kmer file
    my_seq = record.sequence
    #print my_seq
@@ -116,4 +116,28 @@ for record in screed.open(sys.argv[1]): #reading in your kmer file
       if n == 131:
          print ">" + str(n) + "_" + record.name + "_reverse"
          print x
+```
+# This is the output from pri-mer.py on test_NZ_mers.fa
+```{bash}
+[flaterj1@dev-intel14 Scripts]$ python pri-mer.py ../test/test_NZ_mers.fa
+>0_0_refrence_genomes/NZ.fa_forward
+TCAGCCAGTCCGATCCAGA
+>131_0_refrence_genomes/NZ.fa_reverse
+TGGGGTCCGCAACTCAAGG
+>0_1_refrence_genomes/NZ.fa_forward
+GATGGGCGAAACCGCGGCG
+>131_1_refrence_genomes/NZ.fa_reverse
+GGGCTTATTGGATCGCCGT
+>0_2_refrence_genomes/NZ.fa_forward
+GCGATCACCCGGTGAAGCC
+>131_2_refrence_genomes/NZ.fa_reverse
+GAGGAGTTCCGTCAAAGAT
+>0_3_refrence_genomes/NZ.fa_forward
+TCATGATGGCGGCTGCGGT
+>131_3_refrence_genomes/NZ.fa_reverse
+ACCGTGCTGGTGCGTTCGC
+>0_4_refrence_genomes/NZ.fa_forward
+ACTATGGCCTTGCACCGGG
+>131_4_refrence_genomes/NZ.fa_reverse
+GATCCGCGCATAGGCGGCG
 ```
