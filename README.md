@@ -17,7 +17,7 @@ We are interested in IDing unique sequences in G1 and G2 that are not found in o
 # G2:Rhizobium freirei PRF 81
 5. NZ_AQHN01000095.1
 6. NZ_AQHN01000096.1
-7. NZ_AQHN1000084.1 -could not find this on NCBI
+7. NZ_AQHN1000084.1 
 
 ----
 
@@ -25,6 +25,8 @@ The python script "k-mer.py" is a script that works through refrence and compari
 
 Download RefSoil from https://figshare.com/articles/RefSoil_Database/4362812
 ----
+
+#First script in k-mer process:
 ```{python}
 #python k-mer.py [reference1.fa] [comparison1.fa] [comparison.fa] [comparison3.fa] > filename.fa
 import screed, sys
@@ -66,6 +68,7 @@ for n, kmer in enumerate(kmer_dict.keys()):
         print ">" + str(n) + "_" + fname[0]
         print kmer
 ```
+#Example shell commands and file names for first script:
 ----
 Find k-mers in r.freire
 ```{bash}
