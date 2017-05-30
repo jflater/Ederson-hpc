@@ -176,4 +176,20 @@ GGTGCGTGGCTCGTCGGCCCAGACATAGCCGACCATCAGCGATGCATCCCAGACGCCATCGATGGCGTCGATCCCGGGCA
 >19_4_refrence_genomes/NZ.fa
 CAAGGACGAGAAGCCCGGTCTCTGGCTGGTTGGAGACCAAGGGATCTACGTCATGTCGAATGGAAGGCTGCGATCAGACGCCAGACCACTCGTGGTCTATGCGGAGGAATGC
 ```
+[K-mer:]{.s1}[ ]{.s2}[&gt;0\_refrence\_genomes/NZ.fa:]{.s3}[
+]{.s4}[TCAGCCAGTCCGATCCAGA]{.s5}[CTATTACTTCAGCCTGCGTCCCGTGGTCGAAGCCTTCCCCGACGCCCGCGTCATCGCTGCCAGCGCCACCATCGAGGCGATCAAGGCAAATGTGCAGAAGAAGCTCGACACC]{.s4}[TGGGGTCCGCAACTCAAGG]{.s5}[[ ]{.Apple-converted-space}]{.s4}
+
+[primer:]{.s1}[&gt;0\_0\_refrence\_genomes/NZ.fa\_forward[ ]{.Apple-converted-space}]{.s6}[
+[                                                                       
+               
+]{.Apple-converted-space}]{.s4}[&gt;131\_0\_refrence\_genomes/NZ.fa\_reverse]{.s6}
+
+[TCAGCCAGTCCGATCCAGA]{.s7}[[                                           
+                                                                   
+]{.Apple-converted-space}]{.s8}[TGGGGTCCGCAACTCAAGG]{.s7}
+
+[body:]{.s1}[&gt;19\_0\_refrence\_genomes/NZ.fa]{.s4}
+
+[[                        
+]{.Apple-converted-space}]{.s9}[CTATTACTTCAGCCTGCGTCCCGTGGTCGAAGCCTTCCCCGACGCCCGCGTCATCGCTGCCAGCGCCACCATCGAGGCGATCAAGGCAAATGTGCAGAAGAAGCTCGACACC]{.s8}
 
