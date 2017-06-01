@@ -1,5 +1,4 @@
 # Ederson
-# Check size of .fa files in genome directories, some are less than 100b, indicating they lack actual sequences in the file and are most likely links to over view pages for that sequencing effort. 
 # List of accesion numbers in Accession_numbers_for_Jared_and_Adina.xlsx
 We are interested in IDing unique sequences in G1 and G2 that are not found in other rhizobium species as well as not found in RefSoil db or RefSeq db. Once we have those identified, we will id 19 by seq to target for primer design. 
 ![](Images/ideas.jpg)
@@ -176,11 +175,65 @@ GGTGCGTGGCTCGTCGGCCCAGACATAGCCGACCATCAGCGATGCATCCCAGACGCCATCGATGGCGTCGATCCCGGGCA
 >19_4_refrence_genomes/NZ.fa
 CAAGGACGAGAAGCCCGGTCTCTGGCTGGTTGGAGACCAAGGGATCTACGTCATGTCGAATGGAAGGCTGCGATCAGACGCCAGACCACTCGTGGTCTATGCGGAGGAATGC
 ```
-# if we paste the k-mer, primer, and body into text edit, we can see that everything lines up howe would like it to :
+# if we paste the k-mer, primer, and body into text edit, we can see that everything lines up how would like it to :
 ```{bash}
 K-mer: >0_refrence_genomes/NZ.fa: 
 TCAGCCAGTCCGATCCAGACTATTACTTCAGCCTGCGTCCCGTGGTCGAAGCCTTCCCCGACGCCCGCGTCATCGCTGCCAGCGCCACCATCGAGGCGATCAAGGCAAATGTGCAGAAGAAGCTCGACACCTGGGGTCCGCAACTCAAGG
 primer:>0_0_refrence_genomes/NZ.fa_forward                                                                                          >131_0_refrence_genomes/NZ.fa_reverse
 TCAGCCAGTCCGATCCAGA                                                                                                                TGGGGTCCGCAACTCAAGG
 body:              CTATTACTTCAGCCTGCGTCCCGTGGTCGAAGCCTTCCCCGACGCCCGCGTCATCGCTGCCAGCGCCACCATCGAGGCGATCAAGGCAAATGTGCAGAAGAAGCTCGACACC
+```
+```{python}
+#python k-mer.py [primer.fa] [comparison1.fa] [comparison.fa] [comparison3.fa] > filename.fa
+
+#Need to take in primers forward and back, and validate them by making sure they do not appear in know genomes of non-target organisms. 
+
+import screed, sys
+
+def make_kmer_dict(fname):
+   d = {}
+   for f in fname:
+       for record in screed.open(f):
+	   if d.has_key(record.sequence):
+   	       d[record.sequence].append(record.name)
+	   else:
+               d[record.sequence] = [record.name]
+   return d
+
+#makes dictionary of all k-mers in a sequence that are present
+def kmer_count(g, bp):
+   f={}
+   for x in range(len(g)+1-bp):
+      kmer=g[x:x+bp]
+      if f.has_key(kmer):
+         continue
+      else:
+         f[kmer]=f.get(kmer,0)+1
+   return(f)
+
+#breaks a sequence into its respective k-mers
+def rolling_window(seq, window_size):
+   for i in xrange(len(seq) - window_size + 1):
+      yield seq[i:i+window_size]
+
+fname = sys.argv[1:2]
+fname_compare = sys.argv[2:]
+
+kmer_dict = make_kmer_dict(fname)
+#put consume_genome
+#kmer_dict is a dictionary of all 19-mers in fnames
+ref_genome2 = consume_genome(fname_compare)
+#breakdown fname_compare into 19-mers
+for seq in rolling_window(ref_genome2, 19):
+        if kmer_dict.has_key(seq):
+        	continue
+	else:
+		print ">"+kmer_dict[seq][0]
+		print seq
+#for record in screed.open(sys.argv[1]):
+#        y = record.name
+
+#for n, kmer in enumerate(kmer_dict.keys()):
+#        print ">" + str(n) + "_" + fname[0]
+#        print kmer
 ```
