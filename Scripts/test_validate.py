@@ -1,4 +1,4 @@
-"""python k-mer.py [primer.fa] [comparison1.fa] [comparison.fa] [comparison3.fa] > filename.fa"""
+"""python k-mer.py [primer.fa] [/mnt/research/germs/jared/big_files/Genomes/compare_genomes/full_genomes.fa] [/mnt/research/germs/jared/big_files/Genomes/master_genomes.fa] [/mnt/research/germs/jared/big_files/Genomes/RefSoil_archaea_genomes.fa] [/mnt/research/germs/jared/big_files/Genomes/RefSoil_bacteria_genomes] [body.fa] > filename.fa"""
 
 #Need to take in primers forward and back, and validate them by making sure they do not appear
 #in know genomes of non-target organisms.
