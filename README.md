@@ -15,7 +15,7 @@ We are interested in IDing unique sequences in G1 and G2 that are not found in o
 
 # G2:Rhizobium freirei PRF 81
 5. NZ_AQHN01000095.1
-6. NZ_AQHN01000096.1
+6. NZ_AQHN0100009 6.1
 7. NZ_AQHN1000084.1 
 
 ----
@@ -237,3 +237,8 @@ for seq in rolling_window(ref_genome2, 19):
 #        print ">" + str(n) + "_" + fname[0]
 #        print kmer
 ```
+#At this point we still need some test files to fully analyze this pipeline.
+#Need: comparison genomes, refsoil, body
+#Create: test file that is a copy of each of the above, but contains one primer. 
+#This will serve as a false positive. 
+
