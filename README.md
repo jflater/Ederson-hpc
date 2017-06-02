@@ -237,8 +237,8 @@ for seq in rolling_window(ref_genome2, 19):
 #        print ">" + str(n) + "_" + fname[0]
 #        print kmer
 ```
-#At this point we still need some test files to fully analyze this pipeline.
-#Need: comparison genomes, refsoil, body
-#Create: test file that is a copy of each of the above, but contains one primer. 
-#This will serve as a false positive. 
+# At this point we still need some test files to fully analyze this pipeline.
+# Need: comparison genomes, refsoil, body
+# Create: test file that is a copy of each of the above, but contains one primer. 
+# This will serve as a false positive. 
 
