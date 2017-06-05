@@ -1,5 +1,9 @@
-# Ederson
-# List of accesion numbers in Accession_numbers_for_Jared_and_Adina.xlsx
+# Identification of primer targets for identifying biomarkers for specific bacteria
+
+###  By Jared Flater in collaboration with Ederson Jesus and Adina Howe
+
+
+# Inputs: List of accession numbers of targets in Accession_numbers_for_Jared_and_Adina.xlsx
 We are interested in IDing unique sequences in G1 and G2 that are not found in other rhizobium species as well as not found in RefSoil db or RefSeq db. Once we have those identified, we will id 19 by seq to target for primer design. 
 ![](Images/ideas.jpg)
 
@@ -30,6 +34,7 @@ The python script "k-mer.py" is a script that works through refrence and compari
 #python k-mer.py [reference1.fa] [comparison1.fa] [comparison.fa] [comparison3.fa] > filename.fa
 import screed, sys
 
+#This will consume multiple chromosome genomes into one genome
 def consume_genome(fname):
    genome = ''
    for f in fname:
@@ -37,6 +42,7 @@ def consume_genome(fname):
          genome = genome + record.sequence
    return genome
 
+#This generates a count table of each kmer
 def kmer_count(g, bp):
    f={}
    for x in range(len(g)+1-bp):
@@ -47,6 +53,7 @@ def kmer_count(g, bp):
          f[kmer]=f.get(kmer,0)+1
    return(f)
 
+#this function breaks down genomes into its associated kmers
 def rolling_window(seq, window_size):
    for i in xrange(len(seq) - window_size + 1):
       yield seq[i:i+window_size]
@@ -56,9 +63,12 @@ fname_compare = sys.argv[2:]
 
 
 ref_genome1 = consume_genome(fname)
+
+#creates a dictionary of kmers in ref_genome1
 kmer_dict = kmer_count(ref_genome1, 150)
 ref_genome2 = consume_genome(fname_compare)
 
+#modifies dictionary of kmers in ref_genome1 by removing kmers present in ref_genome2
 for seq in rolling_window(ref_genome2, 150):
         if kmer_dict.has_key(seq):
                 del kmer_dict[seq]
@@ -83,15 +93,16 @@ ACTATGGCCTTGCACCGGGCAAGGACGAGAAGCCCGGTCTCTGGCTGGTTGGAGACCAAGGGATCTACGTCATGTCGAAT
 ```
 # Example shell commands and file names for first script:
 ----
-Find k-mers in r.freire
+Find unique k-mers in r.freire
 ```{bash}
 python k-mer.py refrence_genomes/NZ_AQHN01000095.1.fa refrence_genomes/NZ_AQHN01000096.1.fa refrence_genomes/NC*.fa compare_genomes/*.fa > r.freirei.mers.fa
 ```
-Find k-mers in r.tropici
+Find unique k-mers in r.tropici
 ```{bash}
 phython k-mer.py refrence_genomes/NC_02006*.fa refrence_genomes/NC_020059.1.fa refrence_genomes/NZ*.fa compare_genomes/*.fa > r.tropici.mers.fa
 ```
-# Now we will move onto the second script in the process, finding primers for each k-mer:
+# Now we will move onto the second script in the process, identifying potential primers for each k-mer, ensuring that each primer is only present in one gene.  This scripts input is the k-mers unique to each genome and output is the potential primers at each end of k-mer:
+
 ```{bash}
 #python pri-mer.py
 #use this to find unique ends of kmers
