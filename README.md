@@ -3,7 +3,7 @@
 ###  By Jared Flater in collaboration with Ederson Jesus and Adina Howe
 
 
-# Inputs to project:  List of accesion numbers in Accession_numbers_for_Jared_and_Adina.xlsx
+# Inputs: List of accession numbers of targets in Accession_numbers_for_Jared_and_Adina.xlsx
 We are interested in IDing unique sequences in G1 and G2 that are not found in other rhizobium species as well as not found in RefSoil db or RefSeq db. Once we have those identified, we will id 19 by seq to target for primer design. 
 ![](Images/ideas.jpg)
 
@@ -34,6 +34,7 @@ The python script "k-mer.py" is a script that works through refrence and compari
 #python k-mer.py [reference1.fa] [comparison1.fa] [comparison.fa] [comparison3.fa] > filename.fa
 import screed, sys
 
+#This will consume multiple chromosome genomes into one genome
 def consume_genome(fname):
    genome = ''
    for f in fname:
