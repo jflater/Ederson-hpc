@@ -1,5 +1,9 @@
-# Ederson
-# List of accesion numbers in Accession_numbers_for_Jared_and_Adina.xlsx
+# Identification of primer targets for identifying biomarkers for specific bacteria
+
+###  By Jared Flater in collaboration with Ederson Jesus and Adina Howe
+
+
+# Inputs to project:  List of accesion numbers in Accession_numbers_for_Jared_and_Adina.xlsx
 We are interested in IDing unique sequences in G1 and G2 that are not found in other rhizobium species as well as not found in RefSoil db or RefSeq db. Once we have those identified, we will id 19 by seq to target for primer design. 
 ![](Images/ideas.jpg)
 
