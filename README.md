@@ -20,52 +20,66 @@ We are interested in IDing unique sequences in G1 and G2 that are not found in o
 
 ----
 
-The python script "k-mer.py" is a script that works through refrence and comparison genomes that we choose and finds unique sequnces of lenght k (k-mer) for this script k = 150 bp. 
+The python script "k-mer.py" is a script that works through repython k-mer.py frence and comparison genomes that we choose and finds unique sequnces of lenght k (k-mer) for this script k = 150 bp. 
 
-#  Download RefSoil from https://figshare.com/articles/RefSoil_Database/4362812
+#  Download RefSoilpython k-mer.py  from https://figshare.com/articles/RefSoil_Database/python k-mer.py 4362812
 ----
 
 #  First script in k-mer process:
 ```{python}
-#python k-mer.py [reference1.fa] [comparison1.fa] [comparison.fa] [comparison3.fa] > filename.fa
-import screed, sys
+"""breaks up a sequence from a .fa file into kmerlength, and compares to kmers from comparison genomes """
+
+# python k_mer.py [reference1.fa] [comparison1.fa] [comparison.fa] [comparison3.fa] > filename.fa
+
+import sys
+import screed
 
 def consume_genome(fname):
-   genome = ''
-   for f in fname:
-      for record in screed.open(f):
-         genome = genome + record.sequence
-   return genome
+    """reads through a .fa file, returning names and sequences"""
+    genome = ''
+    for i in fname:
+        for record in screed.open(i):
+            genome = genome + record.sequence
+    return genome
 
-def kmer_count(g, bp):
-   f={}
-   for x in range(len(g)+1-bp):
-      kmer=g[x:x+bp]
-      if f.has_key(kmer):
-         continue
-      else:
-         f[kmer]=f.get(kmer,0)+1
-   return(f)
+def kmer_count(genomelookingin, kmerlength):
+    """makes a dictionary of 150 bp kmers"""
+    kmer150 = {}
+    for i in range(len(genomelookingin)+1-kmerlength):
+        kmer = genomelookingin[i:i+kmerlength]
+        if kmer150.has_key(kmer):
+            continue
+        else:
+            kmer150[kmer] = kmer150.get(kmer, 0)+1
+    return kmer150
 
 def rolling_window(seq, window_size):
-   for i in xrange(len(seq) - window_size + 1):
-      yield seq[i:i+window_size]
-
-fname = sys.argv[1:2]
-fname_compare = sys.argv[2:]
+    """rolling window slides along a sequence, showing only 150 bp at a time"""
+    for i in xrange(len(seq) - window_size + 1):
+        yield seq[i:i+window_size]
 
 
-ref_genome1 = consume_genome(fname)
-kmer_dict = kmer_count(ref_genome1, 150)
-ref_genome2 = consume_genome(fname_compare)
+def main():
+    """main for k-mer.py, find kmers in a .fa file."""
+    fname = sys.argv[1:2]
+    fname_compare = sys.argv[2:]
 
-for seq in rolling_window(ref_genome2, 150):
+
+    ref_genome1 = consume_genome(fname)
+    kmer_dict = kmer_count(ref_genome1, 150)
+    ref_genome2 = consume_genome(fname_compare)
+
+    for seq in rolling_window(ref_genome2, 150):
         if kmer_dict.has_key(seq):
-                del kmer_dict[seq]
+            del kmer_dict[seq]
 
-for n, kmer in enumerate(kmer_dict.keys()):
-        print ">" + str(n) + "_" + fname[0]
+    for i, kmer in enumerate(kmer_dict.keys()):
+        print ">" + str(i) + "_" + fname[0]
         print kmer
+
+if __name__ == '__main__':
+    main()
+    
 ```
 # For each file output looks like:
 ```{bash}
@@ -241,4 +255,29 @@ for seq in rolling_window(ref_genome2, 19):
 # Need: comparison genomes, refsoil, body
 # Create: test file that is a copy of each of the above, but contains one primer. 
 # This will serve as a false positive. 
+
+##  Run subset fasta.py on all files in "full genomes" and "master genomes"
+```{bash}
+for file in compare_genomes/*.fa; do python subset_fasta.py $file >> Ederson-hpc/test/test_compare_genomes.fa; done
+```
+make sure file is empty or does not exist when running above ^
+# Handy script to return odd lines in a file:
+```{bash}
+sed -n 1~2p file
+```
+This will start at line 1 and print every 2 lines, odd ones. If this were a fasta file, it would only print the carrot lines!
+```{bash}
+[flaterj1@dev-intel14 test]$ sed -n 1~2p test_compare.fa 
+[flaterj1@dev-intel14 test]$ head test_compare.fa
+>NC_004041.2 Rhizobium etli CFN 42 plasmid symbiotic plasmid p42d, complete sequence
+>NC_007761.1 Rhizobium etli CFN 42, complete genome
+>NC_007762.1 Rhizobium etli CFN 42 plasmid p42a, complete sequence
+>NC_007763.1 Rhizobium etli CFN 42 plasmid p42b, complete sequence
+>NC_007764.1 Rhizobium etli CFN 42 plasmid p42c, complete sequence
+>NC_007765.1 Rhizobium etli CFN 42 plasmid p42e, complete sequence
+>NC_007766.1 Rhizobium etli CFN 42 plasmid p42f, complete sequence
+>NC_008378.1 Rhizobium leguminosarum bv. viciae plasmid pRL12 complete genome, strain 3841
+>NC_008379.1 Rhizobium leguminosarum bv. viciae plasmid pRL9 complete genome, strain 3841
+>NC_008380.1 Rhizobium leguminosarum bv. viciae chromosome complete genome, strain 3841
+```
 
