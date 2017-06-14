@@ -31,7 +31,7 @@ The python script "k_mer.py" is a script that works through repython k-mer.py fr
 ----
 
 #  First script in k-mer process:
-```{python}
+```python
 """breaks up a sequence from a .fa file into kmerlength, and compares to kmers from other genomes
 """
 #python k-mer.py [reference1.fa] [comparison1.fa] [comparison.fa] [comparison3.fa] > filename.fa
