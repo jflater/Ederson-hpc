@@ -1,4 +1,4 @@
-"""breaks up a sequence from a .fa file into kmerlength, and compares to kmers from comparision genomes
+"""breaks up a sequence from a .fa file into kmerlength, and compares to kmers from other genomes
 """
 #python k-mer.py [reference1.fa] [comparison1.fa] [comparison.fa] [comparison3.fa] > filename.fa
 
