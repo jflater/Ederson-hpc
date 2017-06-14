@@ -4,7 +4,6 @@
 import sys
 import screed
 
-#Breaks down a sequence input into corresponding k-mers
 def rolling_window(seq, window_size):
     """rolling window slides along a sequence, in this case showing 19 bp at a time"""
     for i in xrange(len(seq) - window_size + 1):

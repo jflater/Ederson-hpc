@@ -149,30 +149,39 @@ phython k-mer.py refrence_genomes/NC_02006*.fa refrence_genomes/NC_020059.1.fa r
 # Now we will move onto the second script in the process, identifying potential primers for each k-mer, ensuring that each primer is only present in one gene.  This scripts input is the k-mers unique to each genome and output is the potential primers at each end of k-mer:
 
 ```python
+"""Takes in kmers and removes the front and back 19 bp"""
 #python pri-mer.py
-#use this to find unique ends of kmers
 
-import screed, sys
+import sys
+import screed
 
-#Breaks down a sequence input into corresponding k-mers
 def rolling_window(seq, window_size):
-   for i in xrange(len(seq) - window_size + 1):
-      yield seq[i:i+window_size]
+    """rolling window slides along a sequence, in this case showing 19 bp at a time"""
+    for i in xrange(len(seq) - window_size + 1):
+        yield seq[i:i+window_size]
 
+def main():
+    """main for k-mer.py, find kmers in a .fa file."""
+    #reading in your kmer file
+    for record in screed.open(sys.argv[1]):
+        my_seq = record.sequence
+    #print my_seq
+        for i, seq in enumerate(rolling_window(my_seq, 19)):
+            if i == 0:
+                print ">" + str(i) + "_" + record.name + "_forward"
+                print seq
+            if i == 131:
+                print ">" + str(i) + "_" + record.name + "_reverse"
+                print seq
 
-#Make fname be first and last 19 bp 
-for record in screed.open(sys.argv[1]): #reading in your kmer file
-   my_seq = record.sequence
-   #print my_seq
-   for n, x in enumerate(rolling_window(my_seq, 19)):
-      if n == 0:
-         print ">" + str(n) + "_" + record.name + "_forward"
-         print x
-      if n == 131:
-         print ">" + str(n) + "_" + record.name + "_reverse"
-         print x
+if __name__ == '__main__':
+    main()
 ```
-# This is the output from pri-mer.py on test_NZ_mers.fa
+# Run it like this: 
+```
+
+```
+# This is the output from pri_mer.py on test_NZ_mers.fa
 ```
 [flaterj1@dev-intel14 Scripts]$ python pri-mer.py ../test/test_NZ_mers.fa
 >0_0_refrence_genomes/NZ.fa_forward
