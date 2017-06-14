@@ -85,11 +85,12 @@ def main():
 if __name__ == '__main__':
     main()
 ```
-```{bash}
+
+```
 bash-3.2$ python Scripts/k_mer.py test/test_NC.fa test/test_NZ.fa test/test_compare.fa > 1_NC_kmer_test.fa
 ```
 # For each file output looks like:
-```{bash}
+```
 bash-3.2$ head 1_NC_kmer_test.fa 
 >0_test/test_NC.fa
 ACTATATCGTGGTTTGCACTGTGACGGGTTCGACGCAAGCCGGCATGGTCGTTGGTTTCGCCAAGGATGGACGACAGCGCAATGTGATCGGTATCGATGCTTCGGCAACCCCTCTCCAAGCCCAGTCGCAGGTGCTTAACATTGCCCGGC
@@ -105,7 +106,7 @@ TGCCGCATCGCCTCGATCGCCATGCAGCAGATGTCATTGCCGCGGCCAATGGTGAAGGTCAGGCCGTGGCCAGCAAGGCC
 This generated a file that was over 1 gb in size, I wan't really expecting a file this large, however, it may be possible. To test this, I made three files... one .fa file that contained the first 150bp kmer + 5bp of random. The sconed file is just a .fa with zzzzzzzzzzzzz filling it...the final is a .fa with the same first 150 bp as the first file. 
 
 When we compare 155pb_test.fa to 155zbp_test.fa and 150bp_test.fa, we should get 5 kmers:
-```{bash}
+```
 jflater-air:test jaredflater$ python ../Scripts/k_mer.py 155pb_test.fa 155zbp_test.fa 150bp_test.fa
 >0_155pb_test.fa
 ATATCGTGGTTTGCACTGTGACGGGTTCGACGCAAGCCGGCATGGTCGTTGGTTTCGCCAAGGATGGACGACAGCGCAATGTGATCGGTATCGATGCTTCGGCAACCCCTCTCCAAGCCCAGTCGCAGGTGCTTAACATTGCCCGGCGGT
@@ -120,7 +121,7 @@ ATCGTGGTTTGCACTGTGACGGGTTCGACGCAAGCCGGCATGGTCGTTGGTTTCGCCAAGGATGGACGACAGCGCAATGT
 ```
 Now, if we make the same comparison, less the final 150bp_test.fa file, we should have 6 kmers returned:
 
-```{bash}
+```
 jflater-air:test jaredflater$ python ../Scripts/k_mer.py 155pb_test.fa 155zbp_test.fa
 >0_155pb_test.fa
 ACTATATCGTGGTTTGCACTGTGACGGGTTCGACGCAAGCCGGCATGGTCGTTGGTTTCGCCAAGGATGGACGACAGCGCAATGTGATCGGTATCGATGCTTCGGCAACCCCTCTCCAAGCCCAGTCGCAGGTGCTTAACATTGCCCGGC
@@ -138,16 +139,16 @@ ATCGTGGTTTGCACTGTGACGGGTTCGACGCAAGCCGGCATGGTCGTTGGTTTCGCCAAGGATGGACGACAGCGCAATGT
 # Example shell commands and file names for first script:
 ----
 Find unique k-mers in r.freire
-```bash
+```
 python k-mer.py refrence_genomes/NZ_AQHN01000095.1.fa refrence_genomes/NZ_AQHN01000096.1.fa refrence_genomes/NC*.fa compare_genomes/*.fa > r.freirei.mers.fa
 ```
 Find unique k-mers in r.tropici
-```bash
+```
 phython k-mer.py refrence_genomes/NC_02006*.fa refrence_genomes/NC_020059.1.fa refrence_genomes/NZ*.fa compare_genomes/*.fa > r.tropici.mers.fa
 ```
 # Now we will move onto the second script in the process, identifying potential primers for each k-mer, ensuring that each primer is only present in one gene.  This scripts input is the k-mers unique to each genome and output is the potential primers at each end of k-mer:
 
-```bash
+```python
 #python pri-mer.py
 #use this to find unique ends of kmers
 
@@ -172,7 +173,7 @@ for record in screed.open(sys.argv[1]): #reading in your kmer file
          print x
 ```
 # This is the output from pri-mer.py on test_NZ_mers.fa
-```bash
+```
 [flaterj1@dev-intel14 Scripts]$ python pri-mer.py ../test/test_NZ_mers.fa
 >0_0_refrence_genomes/NZ.fa_forward
 TCAGCCAGTCCGATCCAGA
@@ -217,7 +218,7 @@ for record in screed.open(sys.argv[1]):
          print x
 ```
 # This is what the output of body.py looks like:
-```bash
+```
 [flaterj1@dev-intel14 Scripts]$ python body.py ../test/test_NZ_mers.fa
 >19_0_refrence_genomes/NZ.fa
 CTATTACTTCAGCCTGCGTCCCGTGGTCGAAGCCTTCCCCGACGCCCGCGTCATCGCTGCCAGCGCCACCATCGAGGCGATCAAGGCAAATGTGCAGAAGAAGCTCGACACC
@@ -231,13 +232,14 @@ GGTGCGTGGCTCGTCGGCCCAGACATAGCCGACCATCAGCGATGCATCCCAGACGCCATCGATGGCGTCGATCCCGGGCA
 CAAGGACGAGAAGCCCGGTCTCTGGCTGGTTGGAGACCAAGGGATCTACGTCATGTCGAATGGAAGGCTGCGATCAGACGCCAGACCACTCGTGGTCTATGCGGAGGAATGC
 ```
 # if we paste the k-mer, primer, and body into text edit, we can see that everything lines up how would like it to :
-```bash
+```
 K-mer: >0_refrence_genomes/NZ.fa: 
 TCAGCCAGTCCGATCCAGACTATTACTTCAGCCTGCGTCCCGTGGTCGAAGCCTTCCCCGACGCCCGCGTCATCGCTGCCAGCGCCACCATCGAGGCGATCAAGGCAAATGTGCAGAAGAAGCTCGACACCTGGGGTCCGCAACTCAAGG
 primer:>0_0_refrence_genomes/NZ.fa_forward                                                                                          >131_0_refrence_genomes/NZ.fa_reverse
 TCAGCCAGTCCGATCCAGA                                                                                                                TGGGGTCCGCAACTCAAGG
 body:              CTATTACTTCAGCCTGCGTCCCGTGGTCGAAGCCTTCCCCGACGCCCGCGTCATCGCTGCCAGCGCCACCATCGAGGCGATCAAGGCAAATGTGCAGAAGAAGCTCGACACC
 ```
+
 ```python
 #python k-mer.py [primer.fa] [comparison1.fa] [comparison.fa] [comparison3.fa] > filename.fa
 
@@ -298,16 +300,16 @@ for seq in rolling_window(ref_genome2, 19):
 # This will serve as a false positive. 
 
 ##  Run subset fasta.py on all files in "full genomes" and "master genomes"
-```bash
+```
 for file in compare_genomes/*.fa; do python subset_fasta.py $file >> Ederson-hpc/test/test_compare_genomes.fa; done
 ```
 make sure file is empty or does not exist when running above ^
 # Handy script to return odd lines in a file:
-```bash
+```
 sed -n 1~2p file
 ```
 This will start at line 1 and print every 2 lines, odd ones. If this were a fasta file, it would only print the carrot lines!
-```bash
+```
 [flaterj1@dev-intel14 test]$ sed -n 1~2p test_compare.fa 
 [flaterj1@dev-intel14 test]$ head test_compare.fa
 >NC_004041.2 Rhizobium etli CFN 42 plasmid symbiotic plasmid p42d, complete sequence
@@ -324,10 +326,14 @@ This will start at line 1 and print every 2 lines, odd ones. If this were a fast
 
 # Need to investigate how to test a primer for it's reverse compliment
 
-```bash
+```
 cat input.fa | while read L; do echo $L; read L; echo "$L" | rev | tr "ATGC" "TACG" ; done
 ```
 # I seems that for this to work on a file with multiple lines, the .fa file should first be linearized:
-```bash
+```
 awk '/^>/ {printf("%s%s\t",(N>0?"\n":""),$0);N++;next;} {printf("%s",$0);} END {printf("\n");}' < input.fa
+```
+## To remove large files stuck in the commit history of git:
+```
+git filter-branch --index-filter 'git rm -r --cached --ignore-unmatch <file/dir>' HEAD
 ```
