@@ -259,7 +259,7 @@ CGGGTTCGACGCAAGCCGGCATGGTCGTTGGTTTCGCCAAGGATGGACGACAGCGCAATGTGATCGGTATCGATGCTTCG
 ```
 # if we paste the k-mer, primer, and body into text edit, we can see that everything lines up how would like it to :
 ```
->0_test/test_NC.fa
+>0_155pb_test.fa
 ACTATATCGTGGTTTGCACTGTGACGGGTTCGACGCAAGCCGGCATGGTCGTTGGTTTCGCCAAGGATGGACGACAGCGCAATGTGATCGGTATCGATGCTTCGGCAACCCCTCTCCAAGCCCAGTCGCAGGTGCTTAACATTGCCCGGC
 >0_0_155pb_test.fa_forward                                                                                                >131_0_155pb_test.fa_reverse
 ACTATATCGTGGTTTGCAC                                                                                                                GTGCTTAACATTGCCCGGC
