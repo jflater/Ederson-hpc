@@ -138,16 +138,16 @@ ATCGTGGTTTGCACTGTGACGGGTTCGACGCAAGCCGGCATGGTCGTTGGTTTCGCCAAGGATGGACGACAGCGCAATGT
 # Example shell commands and file names for first script:
 ----
 Find unique k-mers in r.freire
-```{bash}
+```bash
 python k-mer.py refrence_genomes/NZ_AQHN01000095.1.fa refrence_genomes/NZ_AQHN01000096.1.fa refrence_genomes/NC*.fa compare_genomes/*.fa > r.freirei.mers.fa
 ```
 Find unique k-mers in r.tropici
-```{bash}
+```bash
 phython k-mer.py refrence_genomes/NC_02006*.fa refrence_genomes/NC_020059.1.fa refrence_genomes/NZ*.fa compare_genomes/*.fa > r.tropici.mers.fa
 ```
 # Now we will move onto the second script in the process, identifying potential primers for each k-mer, ensuring that each primer is only present in one gene.  This scripts input is the k-mers unique to each genome and output is the potential primers at each end of k-mer:
 
-```{bash}
+```bash
 #python pri-mer.py
 #use this to find unique ends of kmers
 
@@ -172,7 +172,7 @@ for record in screed.open(sys.argv[1]): #reading in your kmer file
          print x
 ```
 # This is the output from pri-mer.py on test_NZ_mers.fa
-```{bash}
+```bash
 [flaterj1@dev-intel14 Scripts]$ python pri-mer.py ../test/test_NZ_mers.fa
 >0_0_refrence_genomes/NZ.fa_forward
 TCAGCCAGTCCGATCCAGA
@@ -197,7 +197,7 @@ GATCCGCGCATAGGCGGCG
 ```
 # Now we need to get the "body" out of each k-mer (the middle is 112 bp, 150 total bp minus the two 19 bp ends)
 # For this, use body.py
-```{python}
+```python
 #python body.py
 #use this to feed the body (150-(19*2))bp into a body.fa. We need to make sure no primers match any portion of the k-mer. In addtion, we also include this with all other .fa files we are comparing to.
 
@@ -217,7 +217,7 @@ for record in screed.open(sys.argv[1]):
          print x
 ```
 # This is what the output of body.py looks like:
-```{bash}
+```bash
 [flaterj1@dev-intel14 Scripts]$ python body.py ../test/test_NZ_mers.fa
 >19_0_refrence_genomes/NZ.fa
 CTATTACTTCAGCCTGCGTCCCGTGGTCGAAGCCTTCCCCGACGCCCGCGTCATCGCTGCCAGCGCCACCATCGAGGCGATCAAGGCAAATGTGCAGAAGAAGCTCGACACC
@@ -231,14 +231,14 @@ GGTGCGTGGCTCGTCGGCCCAGACATAGCCGACCATCAGCGATGCATCCCAGACGCCATCGATGGCGTCGATCCCGGGCA
 CAAGGACGAGAAGCCCGGTCTCTGGCTGGTTGGAGACCAAGGGATCTACGTCATGTCGAATGGAAGGCTGCGATCAGACGCCAGACCACTCGTGGTCTATGCGGAGGAATGC
 ```
 # if we paste the k-mer, primer, and body into text edit, we can see that everything lines up how would like it to :
-```{bash}
+```bash
 K-mer: >0_refrence_genomes/NZ.fa: 
 TCAGCCAGTCCGATCCAGACTATTACTTCAGCCTGCGTCCCGTGGTCGAAGCCTTCCCCGACGCCCGCGTCATCGCTGCCAGCGCCACCATCGAGGCGATCAAGGCAAATGTGCAGAAGAAGCTCGACACCTGGGGTCCGCAACTCAAGG
 primer:>0_0_refrence_genomes/NZ.fa_forward                                                                                          >131_0_refrence_genomes/NZ.fa_reverse
 TCAGCCAGTCCGATCCAGA                                                                                                                TGGGGTCCGCAACTCAAGG
 body:              CTATTACTTCAGCCTGCGTCCCGTGGTCGAAGCCTTCCCCGACGCCCGCGTCATCGCTGCCAGCGCCACCATCGAGGCGATCAAGGCAAATGTGCAGAAGAAGCTCGACACC
 ```
-```{python}
+```python
 #python k-mer.py [primer.fa] [comparison1.fa] [comparison.fa] [comparison3.fa] > filename.fa
 
 #Need to take in primers forward and back, and validate them by making sure they do not appear in know genomes of non-target organisms. 
@@ -298,16 +298,16 @@ for seq in rolling_window(ref_genome2, 19):
 # This will serve as a false positive. 
 
 ##  Run subset fasta.py on all files in "full genomes" and "master genomes"
-```{bash}
+```bash
 for file in compare_genomes/*.fa; do python subset_fasta.py $file >> Ederson-hpc/test/test_compare_genomes.fa; done
 ```
 make sure file is empty or does not exist when running above ^
 # Handy script to return odd lines in a file:
-```{bash}
+```bash
 sed -n 1~2p file
 ```
 This will start at line 1 and print every 2 lines, odd ones. If this were a fasta file, it would only print the carrot lines!
-```{bash}
+```bash
 [flaterj1@dev-intel14 test]$ sed -n 1~2p test_compare.fa 
 [flaterj1@dev-intel14 test]$ head test_compare.fa
 >NC_004041.2 Rhizobium etli CFN 42 plasmid symbiotic plasmid p42d, complete sequence
@@ -324,10 +324,10 @@ This will start at line 1 and print every 2 lines, odd ones. If this were a fast
 
 # Need to investigate how to test a primer for it's reverse compliment
 
-```{bash}
+```bash
 cat input.fa | while read L; do echo $L; read L; echo "$L" | rev | tr "ATGC" "TACG" ; done
 ```
 # I seems that for this to work on a file with multiple lines, the .fa file should first be linearized:
-```{bash}
+```bash
 awk '/^>/ {printf("%s%s\t",(N>0?"\n":""),$0);N++;next;} {printf("%s",$0);} END {printf("\n");}' < input.fa
 ```
