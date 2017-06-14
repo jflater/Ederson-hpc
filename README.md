@@ -179,66 +179,83 @@ if __name__ == '__main__':
 ```
 # Run it like this: 
 ```
-
+jflater-air:test jaredflater$ python ../Scripts/pri_mer.py 150_kmer_test.fa > 150_primer_test.py
 ```
-# This is the output from pri_mer.py on test_NZ_mers.fa
+# This is the output from pri_mer.py on 150_kmer_test.fa
 ```
-[flaterj1@dev-intel14 Scripts]$ python pri-mer.py ../test/test_NZ_mers.fa
->0_0_refrence_genomes/NZ.fa_forward
-TCAGCCAGTCCGATCCAGA
->131_0_refrence_genomes/NZ.fa_reverse
-TGGGGTCCGCAACTCAAGG
->0_1_refrence_genomes/NZ.fa_forward
-GATGGGCGAAACCGCGGCG
->131_1_refrence_genomes/NZ.fa_reverse
-GGGCTTATTGGATCGCCGT
->0_2_refrence_genomes/NZ.fa_forward
-GCGATCACCCGGTGAAGCC
->131_2_refrence_genomes/NZ.fa_reverse
-GAGGAGTTCCGTCAAAGAT
->0_3_refrence_genomes/NZ.fa_forward
-TCATGATGGCGGCTGCGGT
->131_3_refrence_genomes/NZ.fa_reverse
-ACCGTGCTGGTGCGTTCGC
->0_4_refrence_genomes/NZ.fa_forward
-ACTATGGCCTTGCACCGGG
->131_4_refrence_genomes/NZ.fa_reverse
-GATCCGCGCATAGGCGGCG
+jflater-air:test jaredflater$ cat 150_primer_test.py
+>0_0_155pb_test.fa_forward
+ACTATATCGTGGTTTGCAC
+>131_0_155pb_test.fa_reverse
+GTGCTTAACATTGCCCGGC
+>0_1_155pb_test.fa_forward
+ATATCGTGGTTTGCACTGT
+>131_1_155pb_test.fa_reverse
+CTTAACATTGCCCGGCGGT
+>0_2_155pb_test.fa_forward
+TATCGTGGTTTGCACTGTG
+>131_2_155pb_test.fa_reverse
+TTAACATTGCCCGGCGGTT
+>0_3_155pb_test.fa_forward
+CTATATCGTGGTTTGCACT
+>131_3_155pb_test.fa_reverse
+TGCTTAACATTGCCCGGCG
+>0_4_155pb_test.fa_forward
+TATATCGTGGTTTGCACTG
+>131_4_155pb_test.fa_reverse
+GCTTAACATTGCCCGGCGG
+>0_5_155pb_test.fa_forward
+ATCGTGGTTTGCACTGTGA
+>131_5_155pb_test.fa_reverse
+TAACATTGCCCGGCGGTTC
 ```
 # Now we need to get the "body" out of each k-mer (the middle is 112 bp, 150 total bp minus the two 19 bp ends)
 # For this, use body.py
 ```python
+"""use this to feed the body (150-(19*2))bp into a body.fa. We need to make sure no primers match any portion of the k-mer. In addtion, we also include this with all other .fa files we are comparing to.
+"""
 #python body.py
-#use this to feed the body (150-(19*2))bp into a body.fa. We need to make sure no primers match any portion of the k-mer. In addtion, we also include this with all other .fa files we are comparing to.
 
-import screed, sys
+import sys
+import screed
 
-#Breaks down a sequence input into corresponding k-mers
 def rolling_window(seq, window_size):
-   for i in xrange(len(seq) - window_size + 1):
-      yield seq[i:i+window_size]
+    """Breaks down a sequence input into corresponding k-mers"""
+    for i in xrange(len(seq) - window_size + 1):
+        yield seq[i:i+window_size]
 
-#exclude first and last 19 bp (future primer) collect only center of 150 bp sequence
-for record in screed.open(sys.argv[1]):
-   my_seq = record.sequence
-   for n, x in enumerate(rolling_window(my_seq, 112)):
-      if n == 19:
-         print ">" + str(n) + "_" + record.name
-         print x
+
+def main():
+    """main for body.py"""
+    for record in screed.open(sys.argv[1]):
+        my_seq = record.sequence
+        for i, seq in enumerate(rolling_window(my_seq, 112)):
+            if i == 19:
+                print ">" + str(i) + "_" + record.name
+                print seq
+
+if __name__ == '__main__':
+    main()
+```
+Run body.py:
+```
+jflater-air:test jaredflater$ python ../Scripts/body.py 150_kmer_test.py > body_test.fa
 ```
 # This is what the output of body.py looks like:
 ```
-[flaterj1@dev-intel14 Scripts]$ python body.py ../test/test_NZ_mers.fa
->19_0_refrence_genomes/NZ.fa
-CTATTACTTCAGCCTGCGTCCCGTGGTCGAAGCCTTCCCCGACGCCCGCGTCATCGCTGCCAGCGCCACCATCGAGGCGATCAAGGCAAATGTGCAGAAGAAGCTCGACACC
->19_1_refrence_genomes/NZ.fa
-GATTATCTCGCCGTCAACATGGGGCTTGGCCTTACGCTGACGTCGCTCGCCATGGCCGTAGTGCTTGTCGGTGTGCTTGCGATCCAGTTTCTGCAGGAGCGCTACGTTCCTT
->19_2_refrence_genomes/NZ.fa
-TTGAGATGCGAGATCAGCACCGTGATGACGAAACCATCGATATCACGCGAAAATCGGAAGCCGTGATTGAGGCGTGGCGGCACCGTAATGATCGCGGGTGGGGTGATGGCGT
->19_3_refrence_genomes/NZ.fa
-GGTGCGTGGCTCGTCGGCCCAGACATAGCCGACCATCAGCGATGCATCCCAGACGCCATCGATGGCGTCGATCCCGGGCAGCATGTCGTAGAGGCCCTTGGCTGGTTCATCG
->19_4_refrence_genomes/NZ.fa
-CAAGGACGAGAAGCCCGGTCTCTGGCTGGTTGGAGACCAAGGGATCTACGTCATGTCGAATGGAAGGCTGCGATCAGACGCCAGACCACTCGTGGTCTATGCGGAGGAATGC
+jflater-air:test jaredflater$ cat body_test.fa
+>19_0_155pb_test.fa
+TGTGACGGGTTCGACGCAAGCCGGCATGGTCGTTGGTTTCGCCAAGGATGGACGACAGCGCAATGTGATCGGTATCGATGCTTCGGCAACCCCTCTCCAAGCCCAGTCGCAG
+>19_1_155pb_test.fa
+GACGGGTTCGACGCAAGCCGGCATGGTCGTTGGTTTCGCCAAGGATGGACGACAGCGCAATGTGATCGGTATCGATGCTTCGGCAACCCCTCTCCAAGCCCAGTCGCAGGTG
+>19_2_155pb_test.fa
+ACGGGTTCGACGCAAGCCGGCATGGTCGTTGGTTTCGCCAAGGATGGACGACAGCGCAATGTGATCGGTATCGATGCTTCGGCAACCCCTCTCCAAGCCCAGTCGCAGGTGC
+>19_3_155pb_test.fa
+GTGACGGGTTCGACGCAAGCCGGCATGGTCGTTGGTTTCGCCAAGGATGGACGACAGCGCAATGTGATCGGTATCGATGCTTCGGCAACCCCTCTCCAAGCCCAGTCGCAGG
+>19_4_155pb_test.fa
+TGACGGGTTCGACGCAAGCCGGCATGGTCGTTGGTTTCGCCAAGGATGGACGACAGCGCAATGTGATCGGTATCGATGCTTCGGCAACCCCTCTCCAAGCCCAGTCGCAGGT
+>19_5_155pb_test.fa
+CGGGTTCGACGCAAGCCGGCATGGTCGTTGGTTTCGCCAAGGATGGACGACAGCGCAATGTGATCGGTATCGATGCTTCGGCAACCCCTCTCCAAGCCCAGTCGCAGGTGCT
 ```
 # if we paste the k-mer, primer, and body into text edit, we can see that everything lines up how would like it to :
 ```
