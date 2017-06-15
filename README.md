@@ -267,6 +267,9 @@ ACTATATCGTGGTTTGCAC                                                             
                    TGTGACGGGTTCGACGCAAGCCGGCATGGTCGTTGGTTTCGCCAAGGATGGACGACAGCGCAATGTGATCGGTATCGATGCTTCGGCAACCCCTCTCCAAGCCCAGTCGCAG
 ```
 ## Work on validating the primers:
+```
+bash-3.2$ python ../Scripts/primer_validate.py 150_primer_test.py test_compare.fa > validated_primers.fa
+```
 ```python
 """similar to k_mer.py, but for primers from those kmers"""
 #python primer_validate.py [primer.fa] [comparison1.fa] [comparison.fa] [comparison3.fa] > name.fa
