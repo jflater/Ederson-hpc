@@ -26,12 +26,13 @@ def make_kmer_dict(fname):
 def kmer_count(kmerlookingin, primerlength):
     """makes dictionary of primers"""
     primer19 = {}
+    print kmerlookingin
     for i in range(len(kmerlookingin)+1-primerlength):
         kmer = kmerlookingin[i:i+primerlength]
         if primer19.has_key(kmer):
             continue
         else:
-            primer19[kmer] = primer19.get(kmer, 0)+1
+            primer19[kmer] = 1
     return primer19
 
 #breaks a sequence into its respective k-mers
@@ -40,14 +41,20 @@ def rolling_window(seq, window_size):
     for i in xrange(len(seq) - window_size + 1):
         yield seq[i:i+window_size]
 
+def make_primer_dict(fname):
+    """primer dict function"""
+    i = {}
+    for i in fname:
+        for record in screed.open(i):
+            i[record.sequence] = record.name
+    return i
+
 def main():
     """main for primer validation"""
     fname = sys.argv[1:2]
     fname_compare = sys.argv[2:]
 
-    make_kmer_dict(fname)
-    ref_genome1 = consume_genome(fname)
-    kmer_dict = kmer_count(ref_genome1, 19)
+    kmer_dict = make_primer_dict(fname)
     #kmer_dict is a dictionary of all 19-mers in fnames
     ref_genome2 = consume_genome(fname_compare)
     #breakdown fname_compare into 19-mers
@@ -56,7 +63,7 @@ def main():
             del kmer_dict[seq]
 
     for i, kmer in enumerate(kmer_dict.keys()):
-        print ">" + str(i) + "_" + fname[0]
+        print ">" + str(i) + "_" + kmer_dict[kmer]
         print kmer
 
 if __name__ == '__main__':
