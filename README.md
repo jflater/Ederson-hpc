@@ -375,7 +375,7 @@ import sys
 import screed
 from Bio.Seq import Seq
 #from Bio.Alphabet import generic_dna
-#so far it's working, but just prints the 
+#so far it's working, but just prints the the last line in the .fa file fed to it, needs a loop! 
 
 for record in screed.open(sys.argv[1]):
     seq = record.sequence
