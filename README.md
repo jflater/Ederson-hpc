@@ -321,6 +321,25 @@ for seq in rolling_window(ref_genome2, 19):
 #        print ">" + str(n) + "_" + fname[0]
 #        print kmer
 ```
+# 6/15/2017 output:
+```
+>201_150_primer_test.py
+CCCGGCGTATATCGTGGTT
+>202_150_primer_test.py
+TTGCCCGGCGTATATCGTG
+>203_150_primer_test.py
+TCTTAACATTGCCCGGCGG
+>204_150_primer_test.py
+ATATCGTGGTTTGCACTGT
+>205_150_primer_test.py
+GCACTGGCTTAACATTGCC
+>206_150_primer_test.py
+ATTGCCCGGCGGTTATCGT
+>207_150_primer_test.py
+CTTGCTTAACATTGCCCGG
+```
+So, the name of each line is from sys.argv [0], I think it needs to be some portion of fname from the first function....
+
 # At this point we still need some test files to fully analyze this pipeline.
 # Need: comparison genomes, refsoil, body
 # Create: test file that is a copy of each of the above, but contains one primer. 
