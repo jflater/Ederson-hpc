@@ -266,7 +266,7 @@ ACTATATCGTGGTTTGCAC                                                             
 >19_0_155pb_test.fa
                    TGTGACGGGTTCGACGCAAGCCGGCATGGTCGTTGGTTTCGCCAAGGATGGACGACAGCGCAATGTGATCGGTATCGATGCTTCGGCAACCCCTCTCCAAGCCCAGTCGCAG
 ```
-
+## Work on validating the primers:
 ```python
 #python k-mer.py [primer.fa] [comparison1.fa] [comparison.fa] [comparison3.fa] > filename.fa
 
