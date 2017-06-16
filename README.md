@@ -5,9 +5,8 @@
 
 ###  By Jared Flater in collaboration with Ederson Jesus and Adina Howe
 
-
 # Inputs: List of accession numbers of targets in Accession_numbers_for_Jared_and_Adina.xlsx
-We are interested in IDing unique sequences in G1 and G2 that are not found in other rhizobium species as well as not found in RefSoil db or RefSeq db. Once we have those identified, we will id 19 by seq to target for primer design. 
+We are interested in IDing unique sequences in G1 and G2 that are not found in other rhizobium species as well as not found in RefSoil db or RefSeq db. Once we have those identified, we will id 19 bp seq to target for primer design. 
 ![](Images/ideas.jpg)
 
 ----
@@ -26,17 +25,11 @@ We are interested in IDing unique sequences in G1 and G2 that are not found in o
 7. NZ_AQHN1000084.1 
 
 ----
-
-The python script "k_mer.py" is a script that works through repython k-mer.py frence and comparison genomes that we choose and finds unique sequnces of lenght k (k-mer) for this script k = 150 bp. 
-
-#  Download RefSoilpython k-mer.py  from https://figshare.com/articles/RefSoil_Database
-----
-
+#  Download RefSoilpython k-mer.py from https://figshare.com/articles/RefSoil_Database
 #  First script in k-mer process:
 
 ```python
-"""breaks up a sequence from a .fa file into kmerlength, and compares to kmers from other genomes
-"""
+"""breaks up a sequence from a .fa file into kmerlength, and compares to kmers from other genomes"""
 #python k-mer.py [reference1.fa] [comparison1.fa] [comparison.fa] [comparison3.fa] > filename.fa
 
 import sys
@@ -106,7 +99,7 @@ AAGGCAGGTAAAACGGGTGAAAGATTCCTGTCGATACTCATTGTCCTGCATAAAATCGACATTGCTGTCGTAGATCTCAT
 >4_test/test_NC.fa
 TGCCGCATCGCCTCGATCGCCATGCAGCAGATGTCATTGCCGCGGCCAATGGTGAAGGTCAGGCCGTGGCCAGCAAGGCCCGGCTTGTCGGTGTCGAGGATGACATAAGCTGCCGAATAATCCGGATCCGGATTCATCGCATCCGAACCA
 ```
-This generated a file that was over 1 gb in size, I wan't really expecting a file this large, however, it may be possible. To test this, I made three files... one .fa file that contained the first 150bp kmer + 5bp of random. The sconed file is just a .fa with zzzzzzzzzzzzz filling it...the final is a .fa with the same first 150 bp as the first file. 
+This generated a file that was over 1 gb in size, I wasn't really expecting a file this large, however, it may be possible. To test this, I made three files... one .fa file that contained the first 150bp kmer + 5bp of random. The second file is just a .fa with zzzzzzzzzzzzz filling it...the final is a .fa with the same first 150 bp as the first file. 
 
 When we compare 155pb_test.fa to 155zbp_test.fa and 150bp_test.fa, we should get 5 kmers:
 
@@ -140,17 +133,8 @@ TATATCGTGGTTTGCACTGTGACGGGTTCGACGCAAGCCGGCATGGTCGTTGGTTTCGCCAAGGATGGACGACAGCGCAA
 >5_155pb_test.fa
 ATCGTGGTTTGCACTGTGACGGGTTCGACGCAAGCCGGCATGGTCGTTGGTTTCGCCAAGGATGGACGACAGCGCAATGTGATCGGTATCGATGCTTCGGCAACCCCTCTCCAAGCCCAGTCGCAGGTGCTTAACATTGCCCGGCGGTTC
 ```
-# Example shell commands and file names for first script:
-----
-Find unique k-mers in r.freire
-```
-python k-mer.py refrence_genomes/NZ_AQHN01000095.1.fa refrence_genomes/NZ_AQHN01000096.1.fa refrence_genomes/NC*.fa compare_genomes/*.fa > r.freirei.mers.fa
-```
-Find unique k-mers in r.tropici
-```
-phython k-mer.py refrence_genomes/NC_02006*.fa refrence_genomes/NC_020059.1.fa refrence_genomes/NZ*.fa compare_genomes/*.fa > r.tropici.mers.fa
-```
-# Now we will move onto the second script in the process, identifying potential primers for each k-mer, ensuring that each primer is only present in one gene.  This scripts input is the k-mers unique to each genome and output is the potential primers at each end of k-mer:
+
+# Now we will move onto the second script in the process, identifying potential primers for each kmer, ensuring that each primer is only present in one gene.  This scripts input is the k-mers unique to each genome and output is the potential primers at each end of kmer:
 
 ```python
 """Takes in kmers and removes the front and back 19 bp"""
@@ -183,11 +167,11 @@ if __name__ == '__main__':
 ```
 # Run it like this: 
 ```
-jflater-air:test jaredflater$ python ../Scripts/pri_mer.py 150_kmer_test.fa > 150_primer_test.py
+jflater-air:test jaredflater$ python ../Scripts/pri_mer.py 150_kmer_test.fa > 150_primer_test.fa
 ```
 # This is the output from pri_mer.py on 150_kmer_test.fa
 ```
-jflater-air:test jaredflater$ cat 150_primer_test.py
+jflater-air:test jaredflater$ cat 150_primer_test.fa
 >0_0_155pb_test.fa_forward
 ACTATATCGTGGTTTGCAC
 >131_0_155pb_test.fa_reverse
@@ -215,9 +199,9 @@ TAACATTGCCCGGCGGTTC
 ```
 # Now we need to get the "body" out of each k-mer (the middle is 112 bp, 150 total bp minus the two 19 bp ends)
 # For this, use body.py
+
 ```python
-"""use this to feed the body (150-(19*2))bp into a body.fa. We need to make sure no primers match any portion of the k-mer. In addtion, we also include this with all other .fa files we are comparing to.
-"""
+"""use this to feed the body (150-(19*2))bp into a body.fa. We need to make sure no primers match any portion of the k-mer. In addtion, we also include this with all other .fa files we are comparing to"""
 #python body.py
 
 import sys
@@ -227,7 +211,6 @@ def rolling_window(seq, window_size):
     """Breaks down a sequence input into corresponding k-mers"""
     for i in xrange(len(seq) - window_size + 1):
         yield seq[i:i+window_size]
-
 
 def main():
     """main for body.py"""
@@ -371,8 +354,8 @@ CTTAACATTGCCCGGCGGT
 0_2_155pb_test.fa_forward
 TATCGTGGTTTGCACTGTG
 ```
-So, the name of each line is from sys.argv [0], I think it needs to be some portion of fname from the first function....
 # Work on complement for each primer:
+
 ```python
 """Find reverse complement of reverse primer, print forward primer"""
 # Input file should be in .fa format, with both forward and reverse primer
@@ -398,11 +381,6 @@ def main():
 if __name__ == '__main__':
     main()
 ```
-# At this point we still need some test files to fully analyze this pipeline.
-# Need: comparison genomes, refsoil, body
-# Create: test file that is a copy of each of the above, but contains one primer. 
-# This will serve as a false positive. 
-
 ##  Run subset fasta.py on all files in "full genomes" and "master genomes"
 ```
 for file in compare_genomes/*.fa; do python subset_fasta.py $file >> Ederson-hpc/test/test_compare_genomes.fa; done
@@ -444,4 +422,14 @@ git filter-branch --index-filter 'git rm -r --cached --ignore-unmatch <file/dir>
 # Run a qsub:
 ```
 $ qsub mysub.qsub 
+```
+# Example shell commands and file names for first script:
+----
+Find unique k-mers in r.freire
+```
+python k-mer.py refrence_genomes/NZ_AQHN01000095.1.fa refrence_genomes/NZ_AQHN01000096.1.fa refrence_genomes/NC*.fa compare_genomes/*.fa > r.freirei.mers.fa
+```
+Find unique k-mers in r.tropici
+```
+phython k-mer.py refrence_genomes/NC_02006*.fa refrence_genomes/NC_020059.1.fa refrence_genomes/NZ*.fa compare_genomes/*.fa > r.tropici.mers.fa
 ```
