@@ -370,18 +370,29 @@ TATCGTGGTTTGCACTGTG
 So, the name of each line is from sys.argv [0], I think it needs to be some portion of fname from the first function....
 # Work on complement for each primer:
 ```python
-"""working on python loop to print the compliment of a primer"""
+"""Find reverse complement of reverse primer, print forward primer"""
+# Input file should be in .fa format, with both forward and reverse primer
+# the word "reverse" in record.name of each reverse primer
+
 import sys
 import screed
+
 from Bio.Seq import Seq
-#from Bio.Alphabet import generic_dna
-#so far it's working, but just prints the the last line in the .fa file fed to it, needs a loop! 
 
-for record in screed.open(sys.argv[1]):
-    seq = record.sequence
+def main():
+    """this is the main, see above"""
+    for record in screed.open(sys.argv[1]):
+        seq = record.sequence
+        my_seq = Seq(seq)
+        if "reverse" in record.name:
+            print ">" + record.name + "_complement"
+            print my_seq.reverse_complement()
+        else:
+            print ">" + record.name
+            print my_seq
 
-my_seq = Seq(seq)
-print my_seq.complement()
+if __name__ == '__main__':
+    main()
 ```
 # At this point we still need some test files to fully analyze this pipeline.
 # Need: comparison genomes, refsoil, body
@@ -425,4 +436,8 @@ awk '/^>/ {printf("%s%s\t",(N>0?"\n":""),$0);N++;next;} {printf("%s",$0);} END {
 ## To remove large files stuck in the commit history of git:
 ```
 git filter-branch --index-filter 'git rm -r --cached --ignore-unmatch <file/dir>' HEAD
+```
+# Run a qsub:
+```
+$ qsub mysub.qsub 
 ```
