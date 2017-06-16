@@ -6,7 +6,7 @@
 ###  By Jared Flater in collaboration with Ederson Jesus and Adina Howe
 
 # Inputs: List of accession numbers of targets in Accession_numbers_for_Jared_and_Adina.xlsx
-We are interested in IDing unique sequences in G1 and G2 that are not found in other rhizobium species as well as not found in RefSoil db or RefSeq db. Once we have those identified, we will id 19 bp seq to target for primer design. 
+We are interested in IDing unique sequences in R.tropici and R.freirei that are not found in other rhizobium species as well as not found in RefSoil db or RefSeq db. Once we have those identified, we will id 19 bp seq to target for primer design. 
 ![](Images/ideas.jpg)
 
 ----
@@ -26,6 +26,7 @@ We are interested in IDing unique sequences in G1 and G2 that are not found in o
 
 ----
 #  Download RefSoilpython k-mer.py from https://figshare.com/articles/RefSoil_Database
+
 #  First script in k-mer process:
 
 ```python
