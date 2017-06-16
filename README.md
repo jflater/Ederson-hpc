@@ -1,6 +1,6 @@
 # Ederson
 # Identification of primer targets for identifying biomarkers for specific bacteria
-
+:microscope:
 ###  By Jared Flater in collaboration with Ederson Jesus and Adina Howe
 
 
@@ -31,6 +31,7 @@ The python script "k_mer.py" is a script that works through repython k-mer.py fr
 ----
 
 #  First script in k-mer process:
+
 ```python
 """breaks up a sequence from a .fa file into kmerlength, and compares to kmers from other genomes
 """
@@ -106,6 +107,7 @@ TGCCGCATCGCCTCGATCGCCATGCAGCAGATGTCATTGCCGCGGCCAATGGTGAAGGTCAGGCCGTGGCCAGCAAGGCC
 This generated a file that was over 1 gb in size, I wan't really expecting a file this large, however, it may be possible. To test this, I made three files... one .fa file that contained the first 150bp kmer + 5bp of random. The sconed file is just a .fa with zzzzzzzzzzzzz filling it...the final is a .fa with the same first 150 bp as the first file. 
 
 When we compare 155pb_test.fa to 155zbp_test.fa and 150bp_test.fa, we should get 5 kmers:
+
 ```
 jflater-air:test jaredflater$ python ../Scripts/k_mer.py 155pb_test.fa 155zbp_test.fa 150bp_test.fa
 >0_155pb_test.fa
