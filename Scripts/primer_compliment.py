@@ -15,9 +15,9 @@ def main():
         if "reverse" in record.name:
             print ">" + record.name + "_complement"
             print my_seq.reverse_complement()
-        else:
-            print ">" + record.name
-            print my_seq
+        if "forward" in record.name:        
+            print ">" + record.name + "_complement"
+            print my_seq.reverse_complement()
 
 if __name__ == '__main__':
     main()
