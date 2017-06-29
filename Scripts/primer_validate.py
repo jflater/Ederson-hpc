@@ -44,9 +44,11 @@ def rolling_window(seq, window_size):
 def make_primer_dict(fname):
     """primer dict function"""
     i = {}
-    for i in fname:
-        for record in screed.open(i):
-            i[record.sequence] = record.name
+    for filename in fname:
+        for record in screed.open(filename):
+            st = record.sequence
+            i[st] = record.name
+            
     return i
 
 def main():
